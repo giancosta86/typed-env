@@ -2,6 +2,10 @@
 
 _Tiny, elegant library for type-safe environment variables_
 
+![GitHub CI](https://github.com/giancosta86/typed-env/actions/workflows/publish-to-npm.yml/badge.svg)
+[![npm version](https://badge.fury.io/js/@giancosta86%2Ftyped-env.svg)](https://badge.fury.io/js/@giancosta86%2Ftyped-env)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](/LICENSE)
+
 **typed-env** is a minimalist **TypeScript** library for **Node.js**, focused on _type-checked environment variables_ - which can therefore have a _type_ and a _default value_, with lightweight notation.
 
 Additionally, the library provides a simplified, type-checked way to explore the nuances of the **NODE_ENV** environment variable.
