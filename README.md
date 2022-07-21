@@ -34,7 +34,7 @@ import {...} from @giancosta86/typed-env
 
 ### EnvironmentVariable\<T\>
 
-The `EnvironmentVariable<T>` class is the very heart of the library - although you will most often instantiate it via the utility functions described below.
+The `EnvironmentVariable<T>` class is the very heart of the library - although you will often instantiate it via the utility functions described below.
 
 It works as follows:
 
@@ -42,19 +42,19 @@ It works as follows:
 
   - the **name** of the environment variable, as it is appears in `process.env`
 
-  - the **mapper** - a `(string) => T` function, mapping the `string` value of the environment variable (if present) into the expected `T` type
+  - the **mapper** - a `(string) => T` function, mapping the `string` raw value of the environment variable (if present) into the expected `T` type
 
 - it only provides a `getValue()` method, that:
 
-  - takes an optional **default value factory** - a `() => T` function returning a default value; it is called if the environment variable is missing
+  - takes an optional **default value factory**, a `() => T` function returning a default value - a function called if the environment variable is missing
 
   - can result in one of 3 outcomes:
 
-    - if the environment variable is defined in `process.env`, it returns the result of the **mapper** function applied to the related `string` value
+    - if the environment variable _exists_ in `process.env`, `getValue()` returns the result of the **mapper** function applied to the related `string` raw value
 
-    - if the environment variable is missing from `process.env`:
+    - if the environment variable is _missing_ from `process.env`:
 
-      - if the **default value factory** argument is present, it is called - and its return value is also returned by `getValue()`
+      - if the **default value factory** argument is present, it is called - and its return value is also returned by `getValue()`. Consequently, the mapper does _not_ intervene in this case
 
       - otherwise, throws a descriptive `Error`
 
@@ -64,22 +64,49 @@ Here is an example usage:
 const serverPort = new EnvironmentVariable<number>(
   "SERVER_PORT",
   Number //Minimalist notation for (rawValue) => Number(rawValue)
-).getValue(() => 8080); //If you call getValue() without arguments when the environment variable is missing from process.env, an Error will be thrown
+).getValue(() => 8080); //Or just .getValue() - but throws if the env var is missing
 ```
 
 Of course, you can also create custom subclasses.
 
 ### getEnvNumber(variableName)
 
-Simplifies the creation of `number`-based environment variables; in particular, the above example becomes:
+Simplified access to `number`-based environment variables; in particular, the above example becomes:
 
 ```typescript
 const serverPort = getEnvNumber("SERVER_PORT").getValue(() => 8080);
 ```
 
+## getEnvBoolean(variableName)
+
+Vastly simplified access to `boolean`-based environment variables, because:
+
+- the following raw values of the environment variable are interpreted as `true`:
+
+  - **true**
+  - **t**
+  - **1**
+  - _the empty string_
+
+- the following raw values are interpreted as `false`:
+
+  - **false**
+  - **f**
+  - **0**
+
+- the comparison is **case-insensitive** and does not keep track of **leading/trailing whitespace**
+
+- finally, incompatible string values will **throw an Error**
+
+For example:
+
+```typescript
+const useCache = getEnvBoolean("USE_CACHE").getValue(() => true);
+```
+
 ### getEnvString(variableName)
 
-Simplifies the creation of `string`-based environment variables. For example:
+Simplified access to `string`-based environment variables. For example:
 
 ```typescript
 const apiUrl = getEnvString("API_URL").getValue(() => "http://localhost");
@@ -98,6 +125,13 @@ The `nodeEnv` instance revolves around the **NODE_ENV** environment variable, by
 For example, to ascertain whether your app is in Production mode - defaulting to `true`:
 
 ```typescript
+/*
+ * This constant will be set to true if:
+ *
+ * * NODE_ENV is actually set to "production"
+ *
+ * * NODE_ENV is missing - because of the () => true default factory
+ */
 const inProduction = nodeJs.inProduction.getValue(() => true);
 ```
 
