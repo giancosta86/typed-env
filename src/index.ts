@@ -4,6 +4,8 @@ export {
   DefaultValueFactory
 } from "./EnvironmentVariable";
 
-export { getEnvString, getEnvNumber, getEnvBoolean } from "./utils";
-
 export { nodeEnv } from "./nodeEnv";
+
+export { getEnvString } from "./getEnv/string";
+export { getEnvNumber } from "./getEnv/number";
+export { getEnvBoolean } from "./getEnv/boolean";
