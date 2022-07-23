@@ -4,8 +4,8 @@ import { getEnvNumber } from "./number";
 const TEST_KEY = "TEST_VAR";
 const TEST_VALUE = 90;
 
-describe("Number environment variable", () => {
-  describe("when not set", () => {
+describe("getEnvNumber()", () => {
+  describe("when the environment variable is missing", () => {
     beforeEach(() => {
       delete env[TEST_KEY];
     });
@@ -25,7 +25,7 @@ describe("Number environment variable", () => {
     });
   });
 
-  describe("when set", () => {
+  describe("when the environment variable exists", () => {
     beforeEach(() => {
       env[TEST_KEY] = TEST_VALUE.toString();
     });

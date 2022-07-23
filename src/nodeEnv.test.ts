@@ -2,7 +2,7 @@ import { env } from "node:process";
 import { nodeEnv } from "./nodeEnv";
 
 describe("Node Environment detector", () => {
-  describe("when the NODE_ENV environment variable is not set", () => {
+  describe("when the NODE_ENV environment variable is missing", () => {
     beforeEach(() => {
       delete env["NODE_ENV"];
     });

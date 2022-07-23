@@ -4,8 +4,8 @@ import { getEnvString } from "./string";
 const TEST_KEY = "TEST_VAR";
 const TEST_VALUE = "Yogi the Bear";
 
-describe("String environment variable", () => {
-  describe("when not set", () => {
+describe("getEnvString()", () => {
+  describe("when the environment variable is missing", () => {
     beforeEach(() => {
       delete env[TEST_KEY];
     });
@@ -25,7 +25,7 @@ describe("String environment variable", () => {
     });
   });
 
-  describe("when set", () => {
+  describe("when the environment variables exists", () => {
     beforeEach(() => {
       env[TEST_KEY] = TEST_VALUE;
     });

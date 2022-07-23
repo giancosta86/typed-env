@@ -3,8 +3,8 @@ import { getEnvBoolean } from "./boolean";
 
 const TEST_KEY = "TEST_VAR";
 
-describe("Boolean environment variable", () => {
-  describe("when not set", () => {
+describe("getEnvBoolean()", () => {
+  describe("when the environment variable is missing", () => {
     beforeEach(() => {
       delete env[TEST_KEY];
     });
@@ -24,7 +24,7 @@ describe("Boolean environment variable", () => {
     });
   });
 
-  describe("when set", () => {
+  describe("when the environment variable exists", () => {
     describe("when not passing a default value factory", () => {
       describe("when the value is a non-boolean string", () => {
         it("should throw", () => {
