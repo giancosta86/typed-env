@@ -6,6 +6,8 @@ _Tiny, elegant library for type-safe environment variables_
 [![npm version](https://badge.fury.io/js/@giancosta86%2Ftyped-env.svg)](https://badge.fury.io/js/@giancosta86%2Ftyped-env)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](/LICENSE)
 
+![How getValue() works](./diagrams/getValue.png)
+
 **typed-env** is a minimalist **TypeScript** library for **Node.js**, focused on _type-checked environment variables_ - which can therefore have a _type_ and a _default value_, with lightweight notation.
 
 Additionally, the library provides a simplified, type-checked way to explore the nuances of the **NODE_ENV** environment variable.
@@ -44,7 +46,7 @@ It works as follows:
 
   - the **mapper** - a `(string) => T` function, mapping the `string` raw value of the environment variable (if present) into the expected `T` type
 
-- it only provides a `getValue()` method, that:
+- it only provides a `getValue()` method, that is summarized by the diagram above; more in detail:
 
   - takes an optional **default value factory**, a `() => T` function returning a default value - a function called if the environment variable is missing
 
@@ -119,6 +121,8 @@ The `nodeEnv` instance revolves around the **NODE_ENV** environment variable, by
 - the `getValue()` method - as discussed above - returning its `string` value, a default value or throwing an `Error`
 
 - the `inProduction` field - an `EnvironmentVariable<boolean>` instance whose mapper returns `true` _if and only if_ **NODE_ENV** is set to **production**
+
+  ![How nodeEnv.inProduction.getValue() works](./diagrams/nodeEnvInProduction.png)
 
 - the `inJest` field - an `EnvironmentVariable<boolean>` instance whose mapper returns `true` _if and only if_ **NODE_ENV** is set to **test**
 
