@@ -36,21 +36,21 @@ import {...} from @giancosta86/typed-env
 
 ### EnvironmentVariable\<T\>
 
-The `EnvironmentVariable<T>` class is the very heart of the library - although you will often instantiate it via the utility functions described below.
+The `EnvironmentVariable<T>` class is the very heart of the library - although you will often instantiate it via the utility functions described below, thus using only its **getValue()** method.
 
-It works as follows:
+`EnvironmentVariable<T>` works as follows:
 
-- the constructor takes 2 parameters:
+- the `constructor` takes 2 parameters:
 
-  - the **name** of the environment variable, as it is appears in `process.env`
+  - the **name** of the environment variable, as it is should appear in `process.env`
 
   - the **mapper** - a `(string) => T` function, mapping the `string` raw value of the environment variable (if present) into the expected `T` type
 
-- it only provides a `getValue()` method, that is summarized by the diagram above; more in detail:
+- the `getValue()` is summarized by the diagram above; more in detail:
 
-  - takes an optional **default value factory**, a `() => T` function returning a default value - a function called if the environment variable is missing
+  - it takes an optional **default value factory**, a `() => T` function returning a default value - a function called if the environment variable is missing
 
-  - can result in one of 3 outcomes:
+  - it can result in one of 3 outcomes:
 
     - if the environment variable _exists_ in `process.env`, `getValue()` returns the result of the **mapper** function applied to the related `string` raw value
 
@@ -58,9 +58,9 @@ It works as follows:
 
       - if the **default value factory** argument is present, it is called - and its return value is also returned by `getValue()`. Consequently, the mapper does _not_ intervene in this case
 
-      - otherwise, throws a descriptive `Error`
+      - otherwise, a descriptive `Error` is thrown
 
-Here is an example usage:
+Here is a brief example:
 
 ```typescript
 const serverPort = new EnvironmentVariable<number>(
@@ -79,7 +79,7 @@ Simplified access to `number`-based environment variables; in particular, the ab
 const serverPort = getEnvNumber("SERVER_PORT").getValue(() => 8080);
 ```
 
-## getEnvBoolean(variableName)
+### getEnvBoolean(variableName)
 
 Vastly simplified access to `boolean`-based environment variables, because:
 
@@ -147,3 +147,7 @@ console.log(
   nodeJs.getValue(() => "")
 );
 ```
+
+## Additional references
+
+For further usage examples, please consult the Jest test suites defined within the **.test.ts** files: typed-env is very well covered by reasonable tests, that also constitute a hyper-detailed documentation source.
