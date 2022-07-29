@@ -1,7 +1,7 @@
 {
   "name": "@giancosta86/typed-env",
   "version": "2.0.0",
-  "description": "Elegant, functional library for type-safe environment variables",
+  "description": "Functional library for type-safe environment variables",
   "main": "dist",
   "types": "dist",
   "files": [],
