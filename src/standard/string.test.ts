@@ -10,11 +10,17 @@ describe("getEnvString()", () => {
       delete env[TEST_KEY];
     });
 
-    describe("when not passing a default value factory", () => {
+    describe("when not passing a default value", () => {
       it("should throw", () => {
         expect(() => {
           getEnvString(TEST_KEY);
         }).toThrow("Cannot find the 'TEST_VAR' environment variable");
+      });
+    });
+
+    describe("when passing a plain default value", () => {
+      it("should return the default value", () => {
+        expect(getEnvString(TEST_KEY, "Dodo")).toBe("Dodo");
       });
     });
 
@@ -30,9 +36,15 @@ describe("getEnvString()", () => {
       env[TEST_KEY] = TEST_VALUE;
     });
 
-    describe("when not passing a default value factory", () => {
+    describe("when not passing a default value", () => {
       it("should return the value itself", () => {
         expect(getEnvString(TEST_KEY)).toBe(TEST_VALUE);
+      });
+    });
+
+    describe("when passing a plain default value", () => {
+      it("should ignore the default value", () => {
+        expect(getEnvString(TEST_KEY, "SOME OTHER VALUE")).toBe(TEST_VALUE);
       });
     });
 

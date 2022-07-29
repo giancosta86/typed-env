@@ -1,4 +1,4 @@
-import { DefaultValueFactory, getEnv, RawValueMapper } from "../getEnv";
+import { DefaultValue, getEnv, RawValueMapper } from "../getEnv";
 
 const TRUE_RAW_VALUES = new Set<string>(["true", "t", "1", ""]);
 const FALSE_RAW_VALUES = new Set<string>(["false", "f", "0"]);
@@ -32,10 +32,10 @@ function createBooleanMapper(variableName: string): RawValueMapper<boolean> {
 
 export const getEnvBoolean = (
   variableName: string,
-  defaultValueFactory?: DefaultValueFactory<boolean>
+  defaultValue?: DefaultValue<boolean>
 ) =>
   getEnv<boolean>(
     variableName,
     createBooleanMapper(variableName),
-    defaultValueFactory
+    defaultValue
   );

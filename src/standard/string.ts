@@ -1,6 +1,6 @@
-import { DefaultValueFactory, getEnv } from "../getEnv";
+import { DefaultValue, getEnv } from "../getEnv";
 
 export const getEnvString = (
   variableName: string,
-  defaultValueFactory?: DefaultValueFactory<string>
-) => getEnv(variableName, rawValue => rawValue, defaultValueFactory);
+  defaultValue?: DefaultValue<string>
+) => getEnv(variableName, rawValue => rawValue, defaultValue);

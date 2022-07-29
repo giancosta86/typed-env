@@ -9,11 +9,17 @@ describe("getEnvBoolean()", () => {
       delete env[TEST_KEY];
     });
 
-    describe("when not passing a default value factory", () => {
+    describe("when not passing a default value", () => {
       it("should throw", () => {
         expect(() => {
           getEnvBoolean(TEST_KEY);
         }).toThrow("Cannot find the 'TEST_VAR' environment variable");
+      });
+    });
+
+    describe("when passing a plain default value", () => {
+      it("should return the default value", () => {
+        expect(getEnvBoolean(TEST_KEY, true)).toBe(true);
       });
     });
 
@@ -25,7 +31,7 @@ describe("getEnvBoolean()", () => {
   });
 
   describe("when the environment variable exists", () => {
-    describe("when not passing a default value factory", () => {
+    describe("when not passing a default value", () => {
       describe("when the value is a non-boolean string", () => {
         it("should throw", () => {
           env[TEST_KEY] = "Yogi the Bear";
@@ -76,6 +82,13 @@ describe("getEnvBoolean()", () => {
           env[TEST_KEY] = "  false ";
           expect(getEnvBoolean(TEST_KEY)).toBe(false);
         });
+      });
+    });
+
+    describe("when passing a plain default value", () => {
+      it("should ignore the default value", () => {
+        env[TEST_KEY] = "true";
+        expect(getEnvBoolean(TEST_KEY, false)).toBe(true);
       });
     });
 
