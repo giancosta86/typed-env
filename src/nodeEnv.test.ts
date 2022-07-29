@@ -1,5 +1,5 @@
 import { env } from "node:process";
-import { nodeEnv } from "./nodeEnv";
+import { getNodeEnv, isInProduction, isInJest } from "./nodeEnv";
 
 describe("Node Environment detector", () => {
   describe("when the NODE_ENV environment variable is missing", () => {
@@ -10,34 +10,34 @@ describe("Node Environment detector", () => {
     describe("when not passing a default value factory", () => {
       it("should throw for the value itself", () => {
         expect(() => {
-          nodeEnv.getValue();
+          getNodeEnv();
         }).toThrow("Cannot find the 'NODE_ENV' environment variable");
       });
 
       it("should throw for the Production flag", () => {
         expect(() => {
-          nodeEnv.inProduction.getValue();
+          isInProduction();
         }).toThrow("Cannot find the 'NODE_ENV' environment variable");
       });
 
       it("should throw for the Jest flag", () => {
         expect(() => {
-          nodeEnv.inJest.getValue();
+          isInJest();
         }).toThrow("Cannot find the 'NODE_ENV' environment variable");
       });
     });
 
     describe("when passing a default value factory", () => {
       it("should return the default value for the value itself", () => {
-        expect(nodeEnv.getValue(() => "Dodo")).toBe("Dodo");
+        expect(getNodeEnv(() => "Dodo")).toBe("Dodo");
       });
 
       it("should return the default value for the Production flag", () => {
-        expect(nodeEnv.inProduction.getValue(() => true)).toBe(true);
+        expect(isInProduction(() => true)).toBe(true);
       });
 
       it("should return the default value for the Jest flag", () => {
-        expect(nodeEnv.inJest.getValue(() => true)).toBe(true);
+        expect(isInJest(() => true)).toBe(true);
       });
     });
   });
@@ -49,29 +49,29 @@ describe("Node Environment detector", () => {
 
     describe("when not passing a default value factory", () => {
       it("should return the Production value for itself", () => {
-        expect(nodeEnv.getValue()).toBe("production");
+        expect(getNodeEnv()).toBe("production");
       });
 
       it("should return true for the Production flag", () => {
-        expect(nodeEnv.inProduction.getValue()).toBe(true);
+        expect(isInProduction()).toBe(true);
       });
 
       it("should return false for the Jest flag", () => {
-        expect(nodeEnv.inJest.getValue()).toBe(false);
+        expect(isInJest()).toBe(false);
       });
     });
 
     describe("when passing a default value factory", () => {
       it("should ignore the default value for the value itself", () => {
-        expect(nodeEnv.getValue(() => "Dodo")).toBe("production");
+        expect(getNodeEnv(() => "Dodo")).toBe("production");
       });
 
       it("should ignore the default value for the Production flag", () => {
-        expect(nodeEnv.inProduction.getValue(() => false)).toBe(true);
+        expect(isInProduction(() => false)).toBe(true);
       });
 
       it("should ignore the default value for the Jest flag", () => {
-        expect(nodeEnv.inJest.getValue(() => true)).toBe(false);
+        expect(isInJest(() => true)).toBe(false);
       });
     });
   });
@@ -83,29 +83,29 @@ describe("Node Environment detector", () => {
 
     describe("when not passing a default value factory", () => {
       it("should return the Jest value for itself", () => {
-        expect(nodeEnv.getValue()).toBe("test");
+        expect(getNodeEnv()).toBe("test");
       });
 
       it("should return false for the Production flag", () => {
-        expect(nodeEnv.inProduction.getValue()).toBe(false);
+        expect(isInProduction()).toBe(false);
       });
 
       it("should return true for the Jest flag", () => {
-        expect(nodeEnv.inJest.getValue()).toBe(true);
+        expect(isInJest()).toBe(true);
       });
     });
 
     describe("when passing a default value factory", () => {
       it("should ignore the default value for the value itself", () => {
-        expect(nodeEnv.getValue(() => "Dodo")).toBe("test");
+        expect(getNodeEnv(() => "Dodo")).toBe("test");
       });
 
       it("should ignore the default value for the Production flag", () => {
-        expect(nodeEnv.inProduction.getValue(() => true)).toBe(false);
+        expect(isInProduction(() => true)).toBe(false);
       });
 
       it("should ignore the default value for the Jest flag", () => {
-        expect(nodeEnv.inJest.getValue(() => false)).toBe(true);
+        expect(isInJest(() => false)).toBe(true);
       });
     });
   });

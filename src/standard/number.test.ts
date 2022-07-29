@@ -1,10 +1,10 @@
 import { env } from "node:process";
-import { getEnvString } from "./string";
+import { getEnvNumber } from "./number";
 
 const TEST_KEY = "TEST_VAR";
-const TEST_VALUE = "Yogi the Bear";
+const TEST_VALUE = 90;
 
-describe("getEnvString()", () => {
+describe("getEnvNumber()", () => {
   describe("when the environment variable is missing", () => {
     beforeEach(() => {
       delete env[TEST_KEY];
@@ -13,34 +13,32 @@ describe("getEnvString()", () => {
     describe("when not passing a default value factory", () => {
       it("should throw", () => {
         expect(() => {
-          getEnvString(TEST_KEY).getValue();
+          getEnvNumber(TEST_KEY);
         }).toThrow("Cannot find the 'TEST_VAR' environment variable");
       });
     });
 
     describe("when passing a default value factory", () => {
       it("should return the default value", () => {
-        expect(getEnvString(TEST_KEY).getValue(() => "Dodo")).toBe("Dodo");
+        expect(getEnvNumber(TEST_KEY, () => 95)).toBe(95);
       });
     });
   });
 
-  describe("when the environment variables exists", () => {
+  describe("when the environment variable exists", () => {
     beforeEach(() => {
-      env[TEST_KEY] = TEST_VALUE;
+      env[TEST_KEY] = TEST_VALUE.toString();
     });
 
     describe("when not passing a default value factory", () => {
       it("should return the value itself", () => {
-        expect(getEnvString(TEST_KEY).getValue()).toBe(TEST_VALUE);
+        expect(getEnvNumber(TEST_KEY)).toBe(TEST_VALUE);
       });
     });
 
     describe("when passing a default value factory", () => {
       it("should ignore the default value", () => {
-        expect(getEnvString(TEST_KEY).getValue(() => "SOME OTHER VALUE")).toBe(
-          TEST_VALUE
-        );
+        expect(getEnvNumber(TEST_KEY, () => 95)).toBe(TEST_VALUE);
       });
     });
   });

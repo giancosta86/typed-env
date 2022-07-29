@@ -1,7 +1,7 @@
 {
   "name": "@giancosta86/typed-env",
-  "version": "1.2.0",
-  "description": "Tiny, elegant library for type-safe environment variables",
+  "version": "2.0.0",
+  "description": "Elegant, functional library for type-safe environment variables",
   "main": "dist",
   "types": "dist",
   "files": [],
@@ -53,6 +53,7 @@
     "@swc/core": "^1.2.218",
     "@swc/jest": "^0.2.22",
     "@types/jest": "^28.1.4",
+    "@types/node": "^16",
     "@typescript-eslint/eslint-plugin": "^5.30.3",
     "@typescript-eslint/parser": "^5.30.3",
     "eslint": "^8.18.0",

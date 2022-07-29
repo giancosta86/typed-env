@@ -1,11 +1,7 @@
-export {
-  EnvironmentVariable,
-  RawValueMapper,
-  DefaultValueFactory
-} from "./EnvironmentVariable";
+export { getEnv as getEnv } from "./getEnv";
 
-export { nodeEnv } from "./nodeEnv";
+export { getEnvString } from "./standard/string";
+export { getEnvNumber } from "./standard/number";
+export { getEnvBoolean } from "./standard/boolean";
 
-export { getEnvString } from "./getEnv/string";
-export { getEnvNumber } from "./getEnv/number";
-export { getEnvBoolean } from "./getEnv/boolean";
+export { getNodeEnv, isInProduction, isInJest } from "./nodeEnv";

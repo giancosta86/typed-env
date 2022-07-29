@@ -12,14 +12,14 @@ describe("getEnvBoolean()", () => {
     describe("when not passing a default value factory", () => {
       it("should throw", () => {
         expect(() => {
-          getEnvBoolean(TEST_KEY).getValue();
+          getEnvBoolean(TEST_KEY);
         }).toThrow("Cannot find the 'TEST_VAR' environment variable");
       });
     });
 
     describe("when passing a default value factory", () => {
       it("should return the default value", () => {
-        expect(getEnvBoolean(TEST_KEY).getValue(() => true)).toBe(true);
+        expect(getEnvBoolean(TEST_KEY, () => true)).toBe(true);
       });
     });
   });
@@ -31,7 +31,7 @@ describe("getEnvBoolean()", () => {
           env[TEST_KEY] = "Yogi the Bear";
 
           expect(() => {
-            getEnvBoolean(TEST_KEY).getValue();
+            getEnvBoolean(TEST_KEY);
           }).toThrow(
             "The environment variable 'TEST_VAR' holds a non-boolean value - 'Yogi the Bear'"
           );
@@ -43,18 +43,18 @@ describe("getEnvBoolean()", () => {
           "should recognize '%s'",
           rawValue => {
             env[TEST_KEY] = rawValue;
-            expect(getEnvBoolean(TEST_KEY).getValue()).toBe(true);
+            expect(getEnvBoolean(TEST_KEY)).toBe(true);
           }
         );
 
         it("should be case-insensitive", () => {
           env[TEST_KEY] = "TrUe";
-          expect(getEnvBoolean(TEST_KEY).getValue()).toBe(true);
+          expect(getEnvBoolean(TEST_KEY)).toBe(true);
         });
 
         it("should ignore leading and trailing spaces", () => {
           env[TEST_KEY] = "  true ";
-          expect(getEnvBoolean(TEST_KEY).getValue()).toBe(true);
+          expect(getEnvBoolean(TEST_KEY)).toBe(true);
         });
       });
 
@@ -63,18 +63,18 @@ describe("getEnvBoolean()", () => {
           "should recognize '%s'",
           rawValue => {
             env[TEST_KEY] = rawValue;
-            expect(getEnvBoolean(TEST_KEY).getValue()).toBe(false);
+            expect(getEnvBoolean(TEST_KEY)).toBe(false);
           }
         );
 
         it("should be case-insensitive", () => {
           env[TEST_KEY] = "fAlSe";
-          expect(getEnvBoolean(TEST_KEY).getValue()).toBe(false);
+          expect(getEnvBoolean(TEST_KEY)).toBe(false);
         });
 
         it("should ignore leading and trailing spaces", () => {
           env[TEST_KEY] = "  false ";
-          expect(getEnvBoolean(TEST_KEY).getValue()).toBe(false);
+          expect(getEnvBoolean(TEST_KEY)).toBe(false);
         });
       });
     });
@@ -82,7 +82,7 @@ describe("getEnvBoolean()", () => {
     describe("when passing a default value factory", () => {
       it("should ignore the default value", () => {
         env[TEST_KEY] = "true";
-        expect(getEnvBoolean(TEST_KEY).getValue(() => false)).toBe(true);
+        expect(getEnvBoolean(TEST_KEY, () => false)).toBe(true);
       });
     });
   });

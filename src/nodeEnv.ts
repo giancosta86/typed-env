@@ -1,24 +1,26 @@
-import { EnvironmentVariable } from "./EnvironmentVariable";
+import { DefaultValueFactory, getEnv } from "./getEnv";
+import { getEnvString } from "./standard/string";
 
-const NAME = "NODE_ENV";
+const VARIABLE_NAME = "NODE_ENV";
 
 const PRODUCTION_VALUE = "production";
 const JEST_VALUE = "test";
 
-class NodeEnv extends EnvironmentVariable<string> {
-  constructor() {
-    super(NAME, rawValue => rawValue);
-  }
+export const getNodeEnv = (defaultValueFactory?: DefaultValueFactory<string>) =>
+  getEnvString(VARIABLE_NAME, defaultValueFactory);
 
-  readonly inProduction = new EnvironmentVariable<boolean>(
-    NAME,
-    rawValue => rawValue === PRODUCTION_VALUE
+export const isInProduction = (
+  defaultValueFactory?: DefaultValueFactory<boolean>
+) =>
+  getEnv(
+    VARIABLE_NAME,
+    rawValue => rawValue === PRODUCTION_VALUE,
+    defaultValueFactory
   );
 
-  readonly inJest = new EnvironmentVariable<boolean>(
-    NAME,
-    rawValue => rawValue === JEST_VALUE
+export const isInJest = (defaultValueFactory?: DefaultValueFactory<boolean>) =>
+  getEnv(
+    VARIABLE_NAME,
+    rawValue => rawValue === JEST_VALUE,
+    defaultValueFactory
   );
-}
-
-export const nodeEnv = new NodeEnv();
