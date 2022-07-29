@@ -1,4 +1,4 @@
-export { getEnv as getEnv } from "./getEnv";
+export { getEnv } from "./getEnv";
 
 export { getEnvString } from "./standard/string";
 export { getEnvNumber } from "./standard/number";
