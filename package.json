@@ -1,12 +1,12 @@
 {
   "name": "@giancosta86/typed-env",
-  "version": "1.1.3",
+  "version": "1.2.0",
   "description": "Tiny, elegant library for type-safe environment variables",
   "main": "dist",
   "types": "dist",
   "files": [],
   "engines": {
-    "node": ">=17.1.0"
+    "node": ">=16.16.0"
   },
   "scripts": {
     "clean": "rimraf dist && rimraf coverage && rimraf giancosta86-*.tgz",
