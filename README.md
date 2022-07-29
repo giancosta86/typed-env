@@ -1,18 +1,18 @@
 # typed-env
 
-_Tiny, elegant library for type-safe environment variables_
+_Functional library for type-safe environment variables_
 
 ![GitHub CI](https://github.com/giancosta86/typed-env/actions/workflows/publish-to-npm.yml/badge.svg)
 [![npm version](https://badge.fury.io/js/@giancosta86%2Ftyped-env.svg)](https://badge.fury.io/js/@giancosta86%2Ftyped-env)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](/LICENSE)
 
-![How getValue() works](./diagrams/getValue.png)
+![How getValue() works](./diagrams/getEnv.png)
 
-**typed-env** is a minimalist **TypeScript** library for **Node.js**, focused on _type-checked environment variables_ - which can therefore have a _type_ and a _default value_, with lightweight notation.
+**typed-env** is a minimalist, _functional_ **TypeScript** library for **Node.js**, focused on _type-checked environment variables_ - that can have a _type_ and a _default value_, with lightweight notation.
 
-Additionally, the library provides a simplified, type-checked way to explore the nuances of the **NODE_ENV** environment variable.
+Additionally, the library provides a simplified, typesafe way to explore the nuances of the **NODE_ENV** environment variable.
 
-Only _read access_ is supported, mainly because in-process modification of environment variables tends to be a discouraged pattern - that can always be achieved by altering `process.env`; however, the _delayed_ approach adopted by **typed-env** makes the library compatible with that scenario as well.
+Only _read access_ is supported, mainly because in-process modification of environment variables tends to be a discouraged pattern - that can always be achieved by altering `process.env`; however, the _delayed_ approach adopted by **typed-env** makes the library compatible with such a dynamic scenario.
 
 ## Installation
 
@@ -34,52 +34,53 @@ All the recommended features are exported by the index file - and can be importe
 import {...} from @giancosta86/typed-env
 ```
 
-### EnvironmentVariable\<T\>
+### getEnv\<T\>(variable name, mapper\[, defaultValue\])
 
-The `EnvironmentVariable<T>` class is the very heart of the library - although you will often instantiate it via the utility functions described below, thus using only its **getValue()** method.
+The `getEnv()` function is the very heart of the library - although you will often prefer the utility functions described below.
 
-`EnvironmentVariable<T>` works as follows:
+`getEnv()` takes 3 parameters:
 
-- the `constructor` takes 2 parameters:
+- the **name** of the environment variable - the `string` that should appear as a key in `process.env`
 
-  - the **name** of the environment variable, as it is should appear in `process.env`
+- the **mapper** - a `(string) => T` function, mapping the `string` _raw value_ of the environment variable (if present) into the expected `T` type
 
-  - the **mapper** - a `(string) => T` function, mapping the `string` raw value of the environment variable (if present) into the expected `T` type
+- an optional **default value** - a plain `T` or a `() => T` function returning a default value; only considered when the environment variable is missing
 
-- the `getValue()` is summarized by the diagram above; more in detail:
+Its outcomes are summarized in the diagram above, and can be described as follows:
 
-  - it takes an optional **default value factory**, a `() => T` function returning a default value - a function called if the environment variable is missing
+- if the environment variable _exists_ in `process.env`, `getEnv()` returns the result of the **mapper** function applied to the related `string` raw value
 
-  - it can result in one of 3 outcomes:
+- if the environment variable is _missing_ from `process.env`:
 
-    - if the environment variable _exists_ in `process.env`, `getValue()` returns the result of the **mapper** function applied to the related `string` raw value
+  - when the **default value** argument is present:
 
-    - if the environment variable is _missing_ from `process.env`:
+    - if it is a _value_ of type `T`, it is returned directly by `getEnv()`
 
-      - if the **default value factory** argument is present, it is called - and its return value is also returned by `getValue()`. Consequently, the mapper does _not_ intervene in this case
+    - if it is a _function_, it is called with no arguments - and its return value becomes the result of `getEnv()` as well
 
-      - otherwise, a descriptive `Error` is thrown
+    Anyway, the mapper does _not_ intervene
+
+  - when also the **default value** is missing, a descriptive `Error` is thrown
 
 Here is a brief example:
 
 ```typescript
-const serverPort = new EnvironmentVariable<number>(
+const serverPort = getEnv(
   "SERVER_PORT",
-  Number //Minimalist notation for (rawValue) => Number(rawValue)
-).getValue(() => 8080); //Or just .getValue() - but throws if the env var is missing
+  Number, //Minimalist notation for (rawValue) => Number(rawValue)
+  8080 //Without a default plain value/function, getEnv() throws if the env var is missing
+);
 ```
 
-Of course, you can also create custom subclasses.
-
-### getEnvNumber(variableName)
+### getEnvNumber(variableName\[, defaultValue\])
 
 Simplified access to `number`-based environment variables; in particular, the above example becomes:
 
 ```typescript
-const serverPort = getEnvNumber("SERVER_PORT").getValue(() => 8080);
+const serverPort = getEnvNumber("SERVER_PORT", 8080);
 ```
 
-### getEnvBoolean(variableName)
+### getEnvBoolean(variableName\[, defaultValue\])
 
 Vastly simplified access to `boolean`-based environment variables, because:
 
@@ -103,28 +104,28 @@ Vastly simplified access to `boolean`-based environment variables, because:
 For example:
 
 ```typescript
-const useCache = getEnvBoolean("USE_CACHE").getValue(() => true);
+const useCache = getEnvBoolean("USE_CACHE", true);
 ```
 
-### getEnvString(variableName)
+### getEnvString(variableName\[, defaultValue\])
 
 Simplified access to `string`-based environment variables. For example:
 
 ```typescript
-const apiUrl = getEnvString("API_URL").getValue(() => "http://localhost");
+const apiUrl = getEnvString("API_URL", "http://localhost");
 ```
 
-### nodeEnv
+### NODE_ENV support
 
-The `nodeEnv` instance revolves around the **NODE_ENV** environment variable, by providing:
+**typed-env** supports the `NODE_ENV` environment variable via:
 
-- the `getValue()` method - as discussed above - returning its `string` value, a default value or throwing an `Error`
+- the `getNodeEnv()` function, that can accept an _optional_ `string` or `() => string` default value
 
-- the `inProduction` field - an `EnvironmentVariable<boolean>` instance whose mapper returns `true` _if and only if_ **NODE_ENV** is set to **production**
+- the `isInProduction()` function, taking an _optional_ `boolean` or `() => boolean` default value, and summarized as follows:
 
   ![How nodeEnv.inProduction.getValue() works](./diagrams/nodeEnvInProduction.png)
 
-- the `inJest` field - an `EnvironmentVariable<boolean>` instance whose mapper returns `true` _if and only if_ **NODE_ENV** is set to **test**
+- the `isInJest()` function - working just like `isInProduction()`, but checking for the **test** value of the `NODE_ENV` variable
 
 For example, to ascertain whether your app is in Production mode - defaulting to `true`:
 
@@ -134,20 +135,17 @@ For example, to ascertain whether your app is in Production mode - defaulting to
  *
  * * NODE_ENV is actually set to "production"
  *
- * * NODE_ENV is missing - because of the () => true default factory
+ * * NODE_ENV is missing - because of the default value
  */
-const inProduction = nodeJs.inProduction.getValue(() => true);
+const inProduction = isInProduction(true);
 ```
 
 Similarly, to just log the current NODE_ENV - and defaulting to an empty string:
 
 ```typescript
-console.log(
-  "NODE_ENV is:",
-  nodeJs.getValue(() => "")
-);
+logger.log(getNodeEnv(""));
 ```
 
 ## Additional references
 
-For further usage examples, please consult the Jest test suites defined within the **.test.ts** files: typed-env is very well covered by reasonable tests, that also constitute a hyper-detailed documentation source.
+For further usage examples, please consult the Jest test suites, that provide even more detailed - and executable - documentation.
