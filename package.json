@@ -10,6 +10,7 @@
   },
   "scripts": {
     "clean": "rimraf dist && rimraf coverage && rimraf giancosta86-*.tgz",
+    "clean:all": "yarn clean && rimraf node_modules",
     "format": "prettier --write .",
     "prepack": "yarn check-all && yarn build && yarn test:prod",
     "check-all": "yarn check-format && yarn lint && yarn test",
@@ -41,6 +42,7 @@
     "typed",
     "environment",
     "variables",
+    "functional",
     "NODE_ENV",
     "production",
     "Jest",
