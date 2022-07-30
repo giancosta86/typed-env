@@ -11,13 +11,14 @@
   "scripts": {
     "clean": "rimraf dist && rimraf coverage && rimraf giancosta86-*.tgz",
     "format": "prettier --write .",
-    "prepack": "yarn check-all && yarn build",
+    "prepack": "yarn check-all && yarn build && yarn test:prod",
     "check-all": "yarn check-format && yarn lint && yarn test",
     "check-format": "prettier --check .",
     "lint": "eslint . --ext .js,.ts",
     "test": "jest",
     "test:watch": "yarn test --watch",
     "test:coverage": "yarn test --coverage",
+    "test:prod": "jest dist --testPathIgnorePatterns=[]",
     "build": "yarn compile-ts",
     "compile-ts": "tsc",
     "watch": "yarn compile-ts --watch"
