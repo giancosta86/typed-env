@@ -26,7 +26,7 @@
   "types": "dist",
   "repository": "giancosta86/typed-env",
   "scripts": {
-    "clean": "rimraf dist && rimraf coverage && rimraf giancosta86-*.tgz",
+    "clean": "rimraf dist coverage giancosta86-*.tgz",
     "clean:all": "yarn clean && rimraf node_modules",
     "format": "prettier --write .",
     "prepack": "yarn check-all && yarn build && yarn test:prod",
