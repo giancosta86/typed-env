@@ -6,7 +6,7 @@ _Functional library for type-safe environment variables_
 [![npm version](https://badge.fury.io/js/@giancosta86%2Ftyped-env.svg)](https://badge.fury.io/js/@giancosta86%2Ftyped-env)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](/LICENSE)
 
-![How getValue() works](./diagrams/getEnv.png)
+![How getValue() works](./docs/diagrams/getEnv.png)
 
 **typed-env** is a minimalist, _functional_ **TypeScript** library for **Node.js**, focused on _type-checked environment variables_ - that can have a _type_ and a _default value_, with lightweight notation.
 
@@ -123,7 +123,7 @@ const apiUrl = getEnvString("API_URL", "http://localhost");
 
 - the `isInProduction()` function, taking an _optional_ `boolean` or `() => boolean` default value, and summarized as follows:
 
-  ![How nodeEnv.inProduction.getValue() works](./diagrams/nodeEnvInProduction.png)
+  ![How nodeEnv.inProduction.getValue() works](./docs/diagrams/nodeEnvInProduction.png)
 
 - the `isInJest()` function - working just like `isInProduction()`, but checking for the **test** value of the `NODE_ENV` variable
 
