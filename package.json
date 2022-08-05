@@ -36,10 +36,10 @@
     "test": "jest",
     "test:watch": "yarn test --watch",
     "test:coverage": "yarn test --coverage",
-    "test:prod": "jest dist --testPathIgnorePatterns=[]",
     "build": "yarn compile-ts",
     "compile-ts": "tsc",
-    "watch": "yarn compile-ts --watch"
+    "watch": "yarn compile-ts --watch",
+    "test:prod": "jest dist --testPathIgnorePatterns=/_.+"
   },
   "dependencies": {},
   "devDependencies": {
