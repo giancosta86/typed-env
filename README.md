@@ -123,7 +123,7 @@ const apiUrl = getEnvString("API_URL", "http://localhost");
 
 - the `isInProduction()` function, taking an _optional_ `boolean` or `() => boolean` default value, and summarized as follows:
 
-  ![How nodeEnv.inProduction.getValue() works](./docs/diagrams/nodeEnvInProduction.png)
+  ![How nodeEnv.inProduction.getValue() works](docs/diagrams/nodeEnvInProduction.png)
 
 - the `isInJest()` function - working just like `isInProduction()`, but checking for the **test** value of the `NODE_ENV` variable
 

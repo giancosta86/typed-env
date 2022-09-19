@@ -1,6 +1,6 @@
 {
   "name": "@giancosta86/typed-env",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Functional library for type-safe environment variables",
   "keywords": [
     "typesafe",
